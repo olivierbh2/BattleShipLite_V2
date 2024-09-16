@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BattleshipLite_Serveur", "BattleshipLite_Serveur\BattleshipLite_Serveur.csproj", "{C08415B9-4944-425F-BA41-AED8BAE887FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsUnitaires", "TestsUnitaires\TestsUnitaires.csproj", "{66F46DF6-E9E3-4CF4-8743-3C0506F1FC4F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C08415B9-4944-425F-BA41-AED8BAE887FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C08415B9-4944-425F-BA41-AED8BAE887FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C08415B9-4944-425F-BA41-AED8BAE887FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C08415B9-4944-425F-BA41-AED8BAE887FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66F46DF6-E9E3-4CF4-8743-3C0506F1FC4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66F46DF6-E9E3-4CF4-8743-3C0506F1FC4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66F46DF6-E9E3-4CF4-8743-3C0506F1FC4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66F46DF6-E9E3-4CF4-8743-3C0506F1FC4F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8665B509-632A-4133-8B85-07D9B8CB4475}
+	EndGlobalSection
+EndGlobal
