@@ -1,0 +1,17 @@
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\bin\Debug\net6.0\BattleshipLite_Serveur.exe
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\bin\Debug\net6.0\BattleshipLite_Serveur.deps.json
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\bin\Debug\net6.0\BattleshipLite_Serveur.runtimeconfig.json
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\bin\Debug\net6.0\BattleshipLite_Serveur.dll
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\bin\Debug\net6.0\BattleshipLite_Serveur.pdb
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\bin\Debug\net6.0\System.Text.Json.dll
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\BattleshipLite_Serveur.csproj.AssemblyReference.cache
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\BattleshipLite_Serveur.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\BattleshipLite_Serveur.AssemblyInfoInputs.cache
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\BattleshipLite_Serveur.AssemblyInfo.cs
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\BattleshipLite_Serveur.csproj.CoreCompileInputs.cache
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\BattleshipLite_Serveur.csproj.CopyComplete
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\BattleshipLite_Serveur.dll
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\refint\BattleshipLite_Serveur.dll
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\BattleshipLite_Serveur.pdb
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\BattleshipLite_Serveur.genruntimeconfig.cache
+C:\Users\1732451\Documents\projs\bslite2\BattleshipLite_v2\Sources\BattleshipLite_Serveur\BattleshipLite_Serveur\obj\Debug\net6.0\ref\BattleshipLite_Serveur.dll

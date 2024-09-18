@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "KVh7axROaa/PSJRUYFNNufn5hYl8b9yVTouDvIPcqxvB2t7m+bv7w0G4uNCRPpoWv6bZp740eh8yxUk43xhCUg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\1732451\\Documents\\projs\\bslite2\\BattleshipLite_v2\\Sources\\BattleshipLite_Serveur\\BattleshipLite_Serveur\\BattleshipLite_Serveur.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\1732451\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\1732451\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
+    "C:\\Users\\1732451\\.nuget\\packages\\system.text.json\\6.0.9\\system.text.json.6.0.9.nupkg.sha512"
+  ],
+  "logs": []
+}
