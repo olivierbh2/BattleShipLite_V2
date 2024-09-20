@@ -27,7 +27,7 @@ namespace BattleshipLite_Client
         /// <param name="nom">Nom ou id du bateau</param>
         /// <param name="position">Positions du bateau</param>
         /// 
-        public Bateau(string nom, string? type, List<Case> positions)
+        public Bateau(string nom, string type, List<Case> positions)
         {
             Nom = nom;
             Positions = positions;
