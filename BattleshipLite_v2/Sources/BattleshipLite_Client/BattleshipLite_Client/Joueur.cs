@@ -49,7 +49,8 @@ namespace BattleshipLite_Client
             // Vérifie si coup est valide
             if (!IsPlacementValide(x, y))
             {
-                Console.WriteLine("Le coup est hors du plateau.");
+                Console.Clear();
+                Affichage.ColorString("Le coup est hors du plateau.", ConsoleColor.Red);
                 return false;
             }
 
@@ -57,7 +58,8 @@ namespace BattleshipLite_Client
             Coup coupClient = new() { Case = new Case(x, y) };
             if (Coups.Any(c => c.Case.X == coupClient.Case.X && c.Case.Y == coupClient.Case.Y))
             {
-                Console.WriteLine("La case a déjà été touchée.");
+                Console.Clear();
+                Affichage.ColorString("La case a déjà été touchée.", ConsoleColor.Red);
                 return false;
             }
 
@@ -88,7 +90,7 @@ namespace BattleshipLite_Client
                         Console.WriteLine($"\nLe coup a touché {bateau.Nom} !");
 
                         // Vérifie si le bateau est coulé
-                        if (bateau.Positions.All(c => c.EstTouche))
+                        if (bateau.CheckCoule())
                         {
                             Console.WriteLine($"Vous avez coulé {bateau.Nom} !");
                         }
@@ -123,13 +125,12 @@ namespace BattleshipLite_Client
                     caseTouchee.ToucheCase(); // Marquer la case comme touchée sur le bateau
                     
                     Console.WriteLine($"\nL'ennemi a touché votre {bateau.Nom}.");
-
                     coupServeur.EstReussi = true;
 
                     // Vérifie si le bateau est coulé
-                    if (bateau.Positions.All(c => c.EstTouche))
+                    if (bateau.CheckCoule())
                     {
-                        Console.WriteLine($"\nL'ennemi a coulé votre {bateau.Nom} !");
+                        Console.WriteLine($"L'ennemi a coulé votre {bateau.Nom} !");
                     }
 
                     break;

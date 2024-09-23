@@ -17,16 +17,22 @@ namespace BattleshipLite_Serveur
         /// </summary>
         public List<Case>? Positions { get; set; }
         /// <summary>
+        /// Type de bateau
+        /// </summary>
+        public string Type { get; set; }
+
+        /// <summary>
         /// Constructeur de la classe Bateau
         /// </summary>
         /// <param name="nom">Nom ou id du bateau</param>
         /// <param name="position">Positions du bateau</param>
-        public Bateau(string nom, List<Case> positions)
+        /// 
+        public Bateau(string nom, string type, List<Case> positions)
         {
             Nom = nom;
             Positions = positions;
+            Type = type;
         }
-
         /// <summary>
         /// Place le bateau sur le plateau
         /// </summary>
@@ -34,6 +40,22 @@ namespace BattleshipLite_Serveur
         public void PlacerBateau(List<Case> position)
         {
             Positions = position;
+        }
+
+        /// <summary>
+        /// Vérifie si le bateau est coulé
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckCoule()
+        {
+            foreach (Case c in Positions)
+            {
+                if (!c.EstTouche)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
         /// <summary>
         /// Vérifie si le bateau est touché
@@ -50,21 +72,6 @@ namespace BattleshipLite_Serveur
                 }
             }
             return false;
-        }
-        /// <summary>
-        /// Vérifie si le bateau est coulé
-        /// </summary>
-        /// <returns></returns>
-        public bool CheckCoule()
-        {
-            foreach (Case c in Positions)
-            {
-                if (!c.EstTouche)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
     }
 }

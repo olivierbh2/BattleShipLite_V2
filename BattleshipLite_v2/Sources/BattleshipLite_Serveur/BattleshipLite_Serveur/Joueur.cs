@@ -47,7 +47,8 @@ namespace BattleshipLite_Serveur
             //Vérifie si coup valide
             if (!IsPlacementValide(x, y))
             {
-                Console.WriteLine("Le coup est hors du plateau.");
+                Console.Clear();
+                Affichage.ColorString("Le coup est hors du plateau.", ConsoleColor.Red);
                 return false;
             }
 
@@ -55,7 +56,8 @@ namespace BattleshipLite_Serveur
             Coup coupServeur = new() { Case = new(x, y) };
             if (Coups.Any(c => c.Case.X == coupServeur.Case.X && c.Case.Y == coupServeur.Case.Y))
             {
-                Console.WriteLine("La case a déjà été touchée.");
+                Console.Clear();
+                Affichage.ColorString("La case a déjà été touchée.", ConsoleColor.Red);
                 return false;
             }
 
@@ -78,7 +80,8 @@ namespace BattleshipLite_Serveur
             Coups.Add(coupServeur);
             plateau.Grille[coupServeur.Case.X][coupServeur.Case.Y].ToucheCase();
 
-
+            Console.Clear();
+            // verifier si hit
             if (attaque.EstReussi)
             {
                 coupServeur.EstReussi = true;
@@ -90,7 +93,15 @@ namespace BattleshipLite_Serveur
                     if (caseTouchee != null)
                     {
                         caseTouchee.ToucheCase(); //Pour bateau
-                        Console.WriteLine("\nLe coup a touché l'ennemi !");
+                        Console.WriteLine($"\nLe coup a touché {bateau.Nom} !");
+
+                        // Vérifie si le bateau est coulé
+                        if (bateau.CheckCoule())
+                        {
+                            Console.WriteLine($"Vous avez coulé {bateau.Nom} !");
+                        }
+
+                        break;
 
                     }
 
@@ -108,6 +119,7 @@ namespace BattleshipLite_Serveur
 
             // Réception du coup du serveur
             string json = connexion.Recois(connexion._handler);
+            Console.Clear();
 
             if (json == String.Empty || json == null)
             {
@@ -123,73 +135,219 @@ namespace BattleshipLite_Serveur
                     if (caseTouchee != null)
                     {
                         caseTouchee.ToucheCase();
-                        Console.WriteLine("L'ennemi à touché votre bateau.");
+                        Console.WriteLine($"\nL'ennemi à touché votre {bateau.Nom}.");
                         coupClient.EstReussi = true;
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("L'ennemi à tiré dans l'eau");
-                    }
+                       
 
-               
-            }
+                    // Vérifie si le bateau est coulé
+                        if (bateau.CheckCoule())
+                        {
+                            Console.WriteLine($"L'ennemi a coulé votre {bateau.Nom} !");
+                        }
+
+                    break;
+
+                    }
+                   
+                }
+
+                if (!coupClient.EstReussi)
+                {
+                    Console.WriteLine("L'ennemi a tiré dans l'eau");
+                }
 
             // Envoi de la réponse au serveur
             connexion.Envoi(connexion._handler, JsonSerializer.Serialize<Coup>(coupClient));
            
         }
-        /// <summary>
-        /// Place les bateaux sur le plateau
-        /// </summary>
-        public bool PlacerBateaux(Bateau bateau, string case1, string case2)
+
+        public bool PlacerChaloupe(Bateau bateau, string case1, string case2)
         {
-            //TODO: plus que deux cases
             Partie.ConvertToGrid(case1, out int x1, out int y1);
-            Case _case1 = new Case(x1, y1);
-
             Partie.ConvertToGrid(case2, out int x2, out int y2);
-            Case _case2 = new Case(x2, y2);
-            // Vérifier que les deux cases sont valides (dans les limites du plateau)
-            if (IsPlacementValide(x1, y1) && IsPlacementValide(x2, y2))
+
+            if (IsPlacementValide(x1, y1) && IsPlacementValide(x2, y2) && !ContainsBoat(x1, y1) && !ContainsBoat(x2, y2))
             {
-                // Vérifier que les deux cases sont adjacentes soit horizontalement, soit verticalement
                 bool sontAdjacentes = (x1 == x2 && Math.Abs(y1 - y2) == 1) || (y1 == y2 && Math.Abs(x1 - x2) == 1);
-                //Pas la même case
-                bool pasPareil = (_case2 != _case1);
 
-                if (sontAdjacentes && pasPareil)
+                if (sontAdjacentes)
                 {
-                    List<Case> positionBateau = new List<Case>();
-                    positionBateau.Add(_case1);
-                    positionBateau.Add(_case2);
-
-                    bateau.PlacerBateau(positionBateau);
+                    bateau.Positions.Add(new Case(x1, y1));
+                    bateau.Positions.Add(new Case(x2, y2));
                     Plateau.Bateaux.Add(bateau);
-
-                    Console.WriteLine($"Bateau placé en {case1} et {case2}");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("Le bateau ne peux pas être placé de cette manière sur le plateau.");
                     return false;
                 }
             }
-            else
-            {
-                Console.WriteLine("Les coordonnées sont hors du plateau.");
-                return false;
-            }
+            return false;
         }
-        public bool IsPlacementValide(int x, int y)
+
+        public bool PlacerVoilier(Bateau bateau, string case1, string case2, string case3)
         {
-            if (x >= 0 && x < Plateau.Hauteur&& y >= 0 && y < Plateau.Largeur)
+
+            // VÉRIFICATION POUR LE VOILIER  : Gracieuseté de ChatGPT
+            Partie.ConvertToGrid(case1, out int x1, out int y1);
+            Partie.ConvertToGrid(case2, out int x2, out int y2);
+            Partie.ConvertToGrid(case3, out int x3, out int y3);
+
+            // Vérifie que les 3 cases sont valides (dans les limites du plateau et non occupées)
+            if (IsPlacementValide(x1, y1) && IsPlacementValide(x2, y2) && IsPlacementValide(x3, y3) && !ContainsBoat(x1, y1) && !ContainsBoat(x2, y2) && !ContainsBoat(x3, y3))
             {
-                return true;
+                // Liste de toutes les cases pour plus de flexibilité
+                List<(int X, int Y)> cases = new()
+                {
+                    (x1, y1),
+                    (x2, y2),
+                    (x3, y3)
+                };
+
+                // Vérifie toutes les combinaisons possibles de disposition en "L"
+                bool isL = FormeL(cases[0], cases[1], cases[2]) ||
+                           FormeL(cases[0], cases[2], cases[1]) ||
+                           FormeL(cases[1], cases[0], cases[2]) ||
+                           FormeL(cases[1], cases[2], cases[0]) ||
+                           FormeL(cases[2], cases[0], cases[1]) ||
+                           FormeL(cases[2], cases[1], cases[0]);
+
+                // Si la disposition forme un "L", ajoute les cases au bateau
+                if (isL)
+                {
+                    bateau.Positions.Add(new Case(x1, y1));
+                    bateau.Positions.Add(new Case(x2, y2));
+                    bateau.Positions.Add(new Case(x3, y3));
+                    Plateau.Bateaux.Add(bateau);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool PlacerPaquebot(Bateau bateau, string case1, string case2, string case3)
+        {
+            Partie.ConvertToGrid(case1, out int x1, out int y1);
+            Partie.ConvertToGrid(case2, out int x2, out int y2);
+            Partie.ConvertToGrid(case3, out int x3, out int y3);
+
+            if (IsPlacementValide(x1, y1) && IsPlacementValide(x2, y2) && IsPlacementValide(x3, y3) && !ContainsBoat(x1, y1) && !ContainsBoat(x2, y2) && !ContainsBoat(x3, y3))
+            {
+                // Vérifier si les trois cases sont alignées en diagonale
+                bool estDiagonal = (Math.Abs(x1 - x2) == 1 && Math.Abs(y1 - y2) == 1) &&
+                                   (Math.Abs(x2 - x3) == 1 && Math.Abs(y2 - y3) == 1);
+
+                if (estDiagonal)
+                {
+                    bateau.Positions.Add(new Case(x1, y1));
+                    bateau.Positions.Add(new Case(x2, y2));
+                    bateau.Positions.Add(new Case(x3, y3));
+                    Plateau.Bateaux.Add(bateau);
+                    return true;
+                }
+                else return false;
             }
             return false;
         }
+
+        public bool ContainsBoat(int x, int y)
+        {
+            // Vérifie si la case a deja un bateau
+            foreach (Bateau bateau in Plateau.Bateaux)
+            {
+                if (bateau.Positions.Any(_case => _case.X == x && _case.Y == y))
+                {
+
+                    return true;
+                }
+            }
+            // pas occupe
+            return false;
+        }
+
+
+        public bool IsPlacementValide(int x, int y)
+        {
+            // Vérifie les limites
+            if (x >= 0 && x < Plateau.Hauteur && y >= 0 && y < Plateau.Largeur)
+            {
+
+                return true;
+            }
+            // hors limite
+            return false;
+        }
+
+        private bool FormeL((int X, int Y) c1, (int X, int Y) c2, (int X, int Y) c3)
+        {
+            // Vérifie si c1 et c2 sont adjacents
+            bool adj1 = (c1.X == c2.X && Math.Abs(c1.Y - c2.Y) == 1) || (c1.Y == c2.Y && Math.Abs(c1.X - c2.X) == 1);
+
+            // Vérifie si c2 et c3 sont adjacents et forment un angle droit avec c1
+            bool adj2 = (c2.X == c3.X && Math.Abs(c2.Y - c3.Y) == 1) || (c2.Y == c3.Y && Math.Abs(c2.X - c3.X) == 1);
+
+            // Assure que les trois cases forment bien un "L"
+            bool angleDroit = (c1.X != c3.X) && (c1.Y != c3.Y);  // Angle droit si les deux dimensions changent
+
+            return adj1 && adj2 && angleDroit;
+        }
+
+
+
+
+
+        ///// <summary>
+        ///// Place les bateaux sur le plateau
+        ///// </summary>
+        //public bool PlacerBateaux(Bateau bateau, string case1, string case2)
+        //{
+        //    //TODO: plus que deux cases
+        //    Partie.ConvertToGrid(case1, out int x1, out int y1);
+        //    Case _case1 = new Case(x1, y1);
+
+        //    Partie.ConvertToGrid(case2, out int x2, out int y2);
+        //    Case _case2 = new Case(x2, y2);
+        //    // Vérifier que les deux cases sont valides (dans les limites du plateau)
+        //    if (IsPlacementValide(x1, y1) && IsPlacementValide(x2, y2))
+        //    {
+        //        // Vérifier que les deux cases sont adjacentes soit horizontalement, soit verticalement
+        //        bool sontAdjacentes = (x1 == x2 && Math.Abs(y1 - y2) == 1) || (y1 == y2 && Math.Abs(x1 - x2) == 1);
+        //        //Pas la même case
+        //        bool pasPareil = (_case2 != _case1);
+
+        //        if (sontAdjacentes && pasPareil)
+        //        {
+        //            List<Case> positionBateau = new List<Case>();
+        //            positionBateau.Add(_case1);
+        //            positionBateau.Add(_case2);
+
+        //            bateau.PlacerBateau(positionBateau);
+        //            Plateau.Bateaux.Add(bateau);
+
+        //            Console.WriteLine($"Bateau placé en {case1} et {case2}");
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Le bateau ne peux pas être placé de cette manière sur le plateau.");
+        //            return false;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Les coordonnées sont hors du plateau.");
+        //        return false;
+        //    }
+        //}
+        //public bool IsPlacementValide(int x, int y)
+        //{
+        //    if (x >= 0 && x < Plateau.Hauteur&& y >= 0 && y < Plateau.Largeur)
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
     }
 }

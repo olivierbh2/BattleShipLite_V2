@@ -243,7 +243,7 @@ namespace BattleshipLite_Serveur
         /// </summary>
         /// <param name="s"></param>
         /// <param name="color"></param>
-        private static void ColorString(string s, ConsoleColor color)
+        public static void ColorString(string s, ConsoleColor color)
         {
             Console.ForegroundColor = color;
             Console.Write(s);

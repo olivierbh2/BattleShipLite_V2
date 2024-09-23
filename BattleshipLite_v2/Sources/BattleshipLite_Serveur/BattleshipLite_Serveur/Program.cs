@@ -75,39 +75,109 @@ namespace BattleshipLite_Serveur
                     partie.Demarrer(ref partie, hauteur, largeur);
 
                     //Placement bateau
-                    Bateau bateau = new("Kayak", new List<Case>());
+                    Bateau bateau = new("Chaloupe1", "Chaloupe", new List<Case>());
+                    Bateau bateau2 = new("Voilier1", "Voilier", new List<Case>());
+                    Bateau bateau3 = new("Paquebot1", "Paquebot", new List<Case>());
 
                     Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
                     bool estPlace = false;
                     string devant, derriere;
 
+                    //Placer Chaloupe 
+                    Console.Clear();
+                    bool ChaloupeEstPlace = false;
                     do
                     {
-                        Console.Clear();
-                        Console.WriteLine("\nTaille Acceptée, la partie peut commencer.\n");
-
+                        string case1, case2;
                         Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
-                        Console.WriteLine("Veuillez placer le devant de votre bateau: ");
-                        devant = Console.ReadLine();
-                        Console.WriteLine("Veuillez placer le derrière de votre bateau: ");
-                        derriere = Console.ReadLine();
+                        Console.WriteLine("Vous placez maintenant votre Chaloupe (2 cases adjacentes, horizontalement ou verticalement");
+                        Console.Write("Entrez la première case : ");
+                        case1 = Console.ReadLine();
+                        Console.Write("Entrez la deuxième case : ");
+                        case2 = Console.ReadLine();
 
-                        if (Partie.IsValidCoordinate(devant) && Partie.IsValidCoordinate(derriere))
+                        if (Partie.IsValidCoordinate(case1) && Partie.IsValidCoordinate(case2))
                         {
                             Console.Clear();
-                            estPlace = partie.Joueurs[0].PlacerBateaux(bateau, devant, derriere);
-                            if (!estPlace)
+                            ChaloupeEstPlace = partie.Joueurs[0].PlacerChaloupe(bateau, case1, case2);
+                            if (!ChaloupeEstPlace)
                             {
-                                Console.WriteLine("Erreur de placement du bateau. Veuillez réessayer.");
-                                Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
+                                Console.Clear();
+                                Affichage.ColorString("Erreur de placement du bateau. Veuillez réessayer.", ConsoleColor.Red);
                             }
                         }
                         else
                         {
-                            Console.WriteLine("Coordonnées invalides.");
+                            Console.Clear();
+                            Affichage.ColorString("Erreur de placement du bateau. Veuillez réessayer.", ConsoleColor.Red);
                         }
 
-                    } while (!estPlace);
+                    } while (!ChaloupeEstPlace);
+
+                    //Placer voilier
+                    Console.Clear();
+                    bool VoilierEstPlace = false;
+                    do
+                    {
+                        string case1, case2, case3;
+
+                        Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
+                        Console.WriteLine("Vous placez maintenant votre Voilier (3 cases en L).");
+                        Console.Write("Entrez la première case : ");
+                        case1 = Console.ReadLine();
+                        Console.Write("Entrez la deuxième case : ");
+                        case2 = Console.ReadLine();
+                        Console.Write("Entrez la troisième case : ");
+                        case3 = Console.ReadLine();
+
+                        if (Partie.IsValidCoordinate(case1) && Partie.IsValidCoordinate(case2) && Partie.IsValidCoordinate(case3))
+                        {
+                            VoilierEstPlace = partie.Joueurs[0].PlacerVoilier(bateau2, case1, case2, case3);
+                            if (!VoilierEstPlace)
+                            {
+                                Console.Clear();
+                                Affichage.ColorString("Erreur de placement du bateau. Veuillez réessayer.", ConsoleColor.Red);
+                            }
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Affichage.ColorString("Erreur de placement du bateau. Veuillez réessayer.", ConsoleColor.Red);
+                        }
+                    } while (!VoilierEstPlace);
+
+
+                    //Placer Paquebot
+                    Console.Clear();
+                    bool PaquebotEstPlace = false;
+                    do
+                    {
+                        string case1, case2, case3;
+
+                        Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
+                        Console.WriteLine("Vous placez maintenant votre Paquebot (3 cases diagonales).");
+                        Console.Write("Entrez la première case : ");
+                        case1 = Console.ReadLine();
+                        Console.Write("Entrez la deuxième case : ");
+                        case2 = Console.ReadLine();
+                        Console.Write("Entrez la troisième case : ");
+                        case3 = Console.ReadLine();
+
+                        if (Partie.IsValidCoordinate(case1) && Partie.IsValidCoordinate(case2) && Partie.IsValidCoordinate(case3))
+                        {
+                            PaquebotEstPlace = partie.Joueurs[0].PlacerPaquebot(bateau3, case1, case2, case3);
+                            if (!PaquebotEstPlace)
+                            {
+                                Console.Clear();
+                                Affichage.ColorString("Erreur de placement du bateau. Veuillez réessayer.", ConsoleColor.Red);
+                            }
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            Affichage.ColorString("Erreur de placement du bateau. Veuillez réessayer.", ConsoleColor.Red);
+                        }
+                    } while (!PaquebotEstPlace);
 
                     Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
 
@@ -117,8 +187,8 @@ namespace BattleshipLite_Serveur
                     {
                         break;
                     }
-                   
-                    Console.WriteLine("Bateau placé. Attente du client...");
+                    Console.Clear();
+                    Console.WriteLine("\nBateaux placés. En attente du client...");
 
                     // Réception du plateau du client
                     string json = connexion.Recois(connexion._handler);
@@ -129,7 +199,7 @@ namespace BattleshipLite_Serveur
                     }
                     Plateau plateauEnnemi = JsonSerializer.Deserialize<Plateau>(json);
                     partie.Joueurs[1].Plateau = plateauEnnemi;
-
+                    Console.Clear();
                     Console.WriteLine("L'ennemi a placé son bateau. A l'attaque !");
 
                    
@@ -163,7 +233,9 @@ namespace BattleshipLite_Serveur
 
                                     if (!coupValide)
                                     {
-                                        Console.WriteLine("Coup invalide.");
+
+                                        Affichage.ColorString("\nCoup invalide.", ConsoleColor.Red) ;
+                                        Affichage.PrintPlateauEnemi(partie.Joueurs[1].Plateau);
                                     }
 
                                 } while (!coupValide);

@@ -240,7 +240,8 @@ namespace BattleshipLite_Client
                                     coupValide = Partie.IsValidCoordinate(coup) && partie.Joueurs[0].JouerCoup(conn, partie.Joueurs[1].Plateau, coup);
                                     if (!coupValide)
                                     {
-                                        Console.WriteLine("Coup invalide.");
+                                        Affichage.ColorString("\nCoup invalide.", ConsoleColor.Red);
+                                        Affichage.PrintPlateauEnemi(partie.Joueurs[1].Plateau);
                                     }
 
                                 } while (!coupValide);

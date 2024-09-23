@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\1732451\\Documents\\projs\\bslite2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\BattleshipLite_Client.csproj": {}
+    "C:\\Users\\1732451\\Source\\Repos\\BattleShipLite_V2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\BattleshipLite_Client.csproj": {}
   },
   "projects": {
-    "C:\\Users\\1732451\\Documents\\projs\\bslite2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\BattleshipLite_Client.csproj": {
+    "C:\\Users\\1732451\\Source\\Repos\\BattleShipLite_V2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\BattleshipLite_Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\1732451\\Documents\\projs\\bslite2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\BattleshipLite_Client.csproj",
+        "projectUniqueName": "C:\\Users\\1732451\\Source\\Repos\\BattleShipLite_V2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\BattleshipLite_Client.csproj",
         "projectName": "BattleshipLite_Client",
-        "projectPath": "C:\\Users\\1732451\\Documents\\projs\\bslite2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\BattleshipLite_Client.csproj",
+        "projectPath": "C:\\Users\\1732451\\Source\\Repos\\BattleShipLite_V2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\BattleshipLite_Client.csproj",
         "packagesPath": "C:\\Users\\1732451\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\1732451\\Documents\\projs\\bslite2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\obj\\",
+        "outputPath": "C:\\Users\\1732451\\Source\\Repos\\BattleShipLite_V2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
