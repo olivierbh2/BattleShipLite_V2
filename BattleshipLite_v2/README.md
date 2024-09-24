@@ -1,6 +1,6 @@
 # Battleship Lite
 Développement d'application expert
-##DEMANDE DE MODIFICATIONS 
+## DEMANDES DE MODIFICATIONS 
 
 ## Table des matières
 1. [Description](#description)
