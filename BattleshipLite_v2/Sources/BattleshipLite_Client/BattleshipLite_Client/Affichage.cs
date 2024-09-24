@@ -157,7 +157,7 @@ namespace BattleshipLite_Client
         /// </summary>
         public static void PrintLegende()
         {
-            Console.WriteLine("\nLégende : ");
+            Console.WriteLine(" ");
             Console.Write("["); ColorChar('~', ConsoleColor.Blue); Console.Write("] = Eau inexplorée\n");
             Console.Write("["); ColorChar('■', ConsoleColor.Red); Console.Write("] = Bateau touché\n");
             Console.Write("["); ColorChar('x', ConsoleColor.White); Console.Write("] = Eau touchée\n");

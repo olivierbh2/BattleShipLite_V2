@@ -19,14 +19,11 @@ namespace BattleshipLite_Serveur
             }
             while (true)
             {
-
                 Connexion connexion = new Connexion(port);
                 connexion.StarterServeur();
 
-
                 while (connexion._handler.Connected)
                 {
-
                     //Début partie
                     Partie partie = new();
                     int hauteur = 0, largeur = 0;
@@ -34,7 +31,7 @@ namespace BattleshipLite_Serveur
                     Console.WriteLine("__________________________");
                     Console.WriteLine("\nEntrez les dimension du plateau de jeu.\n");
 
-
+                    // Fonction pour récupérer la taille du plateau
                     int GetDimension(string dimensionName)
                     {
                         int dimension;
@@ -45,7 +42,7 @@ namespace BattleshipLite_Serveur
                         return dimension;
                     }
 
-
+                    // Boucle pour proposer et accepter la taille
                     while (!tailleAcceptee)
                     {
                         hauteur = GetDimension("hauteur");
@@ -74,14 +71,12 @@ namespace BattleshipLite_Serveur
                     // Démarrer la partie 
                     partie.Demarrer(ref partie, hauteur, largeur);
 
-                    //Placement bateau
+                    // Placement des bateaux
                     Bateau bateau = new("Chaloupe1", "Chaloupe", new List<Case>());
                     Bateau bateau2 = new("Voilier1", "Voilier", new List<Case>());
                     Bateau bateau3 = new("Paquebot1", "Paquebot", new List<Case>());
 
-                    Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
-                    bool estPlace = false;
-                    string devant, derriere;
+                    // Placement des bateaux
 
                     //Placer Chaloupe 
                     Console.Clear();
@@ -179,111 +174,108 @@ namespace BattleshipLite_Serveur
                         }
                     } while (!PaquebotEstPlace);
 
-                    Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
 
-                    // Envoyer le plateau du serveur au client
-                    //Le break permet de détecter que le client s'est déconnecté
+                    // Envoyer le plateau au client
                     if (!connexion.Envoi(connexion._handler, JsonSerializer.Serialize(partie.Joueurs[0].Plateau)))
                     {
-                        break;
+                        break; // Client déconnecté
                     }
+
                     Console.Clear();
-                    Console.WriteLine("\nBateaux placés. En attente du client...");
+                    Console.WriteLine("Bateaux placés. En attente du client...");
 
                     // Réception du plateau du client
                     string json = connexion.Recois(connexion._handler);
-                    //Le break permet de détecter que le client s'est déconnecté
-                    if (json == String.Empty || json == null)
+                    if (string.IsNullOrEmpty(json))
                     {
-                        break;
+                        break; // Client déconnecté
                     }
                     Plateau plateauEnnemi = JsonSerializer.Deserialize<Plateau>(json);
                     partie.Joueurs[1].Plateau = plateauEnnemi;
                     Console.Clear();
-                    Console.WriteLine("L'ennemi a placé son bateau. A l'attaque !");
-
-                   
-                    Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
-
-
+                    Console.WriteLine("Bateaux placés. À l'attaque !");
 
                     // Jeu
                     Joueur? winner;
+                    bool serveurDoitJouer = true;
+
                     while (partie.EnCours)
                     {
-
+                        // Vérifier si un joueur a gagné
                         if (!partie.CheckIfWinner(partie, out winner))
                         {
-
-                            bool coupValide = false;
-                            string coup;
-                           
-                            //Envoi coup
-                            Affichage.PrintPlateauEnemi(partie.Joueurs[1].Plateau);
-                            if (!partie.CheckIfWinner(partie, out winner))
+                            // Tour du serveur
+                            while (serveurDoitJouer && !partie.CheckIfWinner(partie, out winner))
                             {
+                                bool coupValide = false;
+                                string coup;
+
                                 do
                                 {
+                                    Affichage.PrintPlateauEnemi(partie.Joueurs[1].Plateau);
                                     Affichage.PrintLegende();
-                                    Console.WriteLine("Jouer votre coup: ");
+                                    Console.Write("Jouez votre coup : ");
                                     coup = Console.ReadLine();
 
-                                    coupValide = Partie.IsValidCoordinate(coup) && partie.Joueurs[0].JouerCoup(connexion, partie.Joueurs[1].Plateau, coup);
-
-
+                                    coupValide = Partie.IsValidCoordinate(coup) && partie.Joueurs[0].JouerCoup(connexion, partie.Joueurs[1].Plateau, coup, out serveurDoitJouer);
                                     if (!coupValide)
                                     {
-
-                                        Affichage.ColorString("\nCoup invalide.", ConsoleColor.Red) ;
-                                        Affichage.PrintPlateauEnemi(partie.Joueurs[1].Plateau);
+                                        Affichage.ColorString("\nCoup invalide.", ConsoleColor.Red);
                                     }
+                                } while (!coupValide && serveurDoitJouer);
 
-                                } while (!coupValide);
-
-                                Affichage.PrintPlateauEnemi(partie.Joueurs[1].Plateau);
-                                if (!partie.CheckIfWinner(partie, out winner))
-                                {
-                                    //Recois coup client
-                                    Console.WriteLine("Au tour du client.");
-                                    partie.Joueurs[0].VerifCoup(connexion, partie.Joueurs[0].Plateau);
-                                    
-                                    Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
-                                    
-                                }
+                               
                             }
+
+                            // Tour du client (si le serveur a manqué)
+                            bool clientDoitJouer = true;
+                            Console.WriteLine("Au tour du client.");
+                            while (clientDoitJouer && !partie.CheckIfWinner(partie, out winner))
+                            {
+                                
+                                clientDoitJouer = partie.Joueurs[0].VerifCoup(connexion, partie.Joueurs[0].Plateau); // Le client joue
+                                Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
+                                if (clientDoitJouer)
+                                {
+                                    Console.WriteLine("\nLe client rejoue...");
+                                }
+   
+                            }
+
+                            // Si le client manque, le serveur peut rejouer
+                            serveurDoitJouer = !clientDoitJouer;
                         }
                         else
                         {
-
+                            // Affichage du gagnant
                             Affichage.MessageVictoire(winner, partie);
                             partie.EnCours = false;
                         }
                     }
 
+                    // Rematch
                     if (!partie.EnCours)
                     {
-                        Console.WriteLine("Demande d'un remath envoyé au client...");
+                        Console.WriteLine("Demande d'un rematch envoyé au client...");
                         string rematch = "Faire un rematch ? [O/N]\n";
                         if (!connexion.Envoi(connexion._handler, rematch))
                         {
-                            break;
+                            break; // Client déconnecté
                         }
                         string reponse = connexion.Recois(connexion._handler);
 
-                        //Le break permet de détecter que le client s'est déconnecté
-                        if (reponse == String.Empty || reponse == null || reponse.Trim().ToUpper() != "O")
+                        if (string.IsNullOrEmpty(reponse) || reponse.Trim().ToUpper() != "O")
                         {
-                            break;
+                            break; // Fin du jeu si pas de rematch
                         }
                         Console.WriteLine("Rematch !");
                     }
-
                 }
+
+                // Déconnexion du client
                 Console.WriteLine("Connexion coupée, en attente d'un autre client...");
                 connexion.ArreterServeur();
-
             }
         }
     }
 }
-

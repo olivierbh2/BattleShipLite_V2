@@ -3,8 +3,9 @@
     "",
     "\\BattleshipLite_v2",
     "\\BattleshipLite_v2\\Sources",
-    "\\BattleshipLite_v2\\Sources\\BattleshipLite_Serveur"
+    "\\BattleshipLite_v2\\Sources\\BattleshipLite_Client",
+    "\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client"
   ],
-  "SelectedNode": "\\BattleshipLite_v2\\Sources\\BattleshipLite_Serveur\\BattleshipLite_Serveur.sln",
+  "SelectedNode": "\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\Affichage.cs",
   "PreviewInSolutionExplorer": false
 }

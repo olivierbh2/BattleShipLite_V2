@@ -80,7 +80,7 @@ namespace BattleshipLite_Client
                 Thread.Sleep(1000);
 
                 Partie partie = new();
-                Bateau bateau = new("Chaloupe1","Chaloupe", new List<Case>());
+                Bateau bateau = new("Chaloupe1", "Chaloupe", new List<Case>());
                 Bateau bateau2 = new("Voilier1", "Voilier", new List<Case>());
                 Bateau bateau3 = new("Paquebot1", "Paquebot", new List<Case>());
 
@@ -101,26 +101,26 @@ namespace BattleshipLite_Client
                 bool ChaloupeEstPlace = false;
                 do
                 {
-                string case1, case2;
-                Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
-                Console.WriteLine("Vous placez maintenant votre Chaloupe (2 cases adjacentes, horizontalement ou verticalement");
-                Console.Write("Entrez la première case : ");
-                case1 = Console.ReadLine();
-                Console.Write("Entrez la deuxième case : ");
-                case2 = Console.ReadLine();
+                    string case1, case2;
+                    Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
+                    Console.WriteLine("Vous placez maintenant votre Chaloupe (2 cases adjacentes, horizontalement ou verticalement");
+                    Console.Write("Entrez la première case : ");
+                    case1 = Console.ReadLine();
+                    Console.Write("Entrez la deuxième case : ");
+                    case2 = Console.ReadLine();
 
-                        if (Partie.IsValidCoordinate(case1) && Partie.IsValidCoordinate(case2))
+                    if (Partie.IsValidCoordinate(case1) && Partie.IsValidCoordinate(case2))
+                    {
+                        Console.Clear();
+                        ChaloupeEstPlace = partie.Joueurs[0].PlacerChaloupe(bateau, case1, case2);
+                        if (!ChaloupeEstPlace)
                         {
-                            Console.Clear();
-                            ChaloupeEstPlace = partie.Joueurs[0].PlacerChaloupe(bateau, case1, case2);
-                            if (!ChaloupeEstPlace)
-                            {
                             Console.Clear();
                             Affichage.ColorString("Erreur de placement du bateau. Veuillez réessayer.", ConsoleColor.Red);
-                            }
                         }
-                        else
-                        {
+                    }
+                    else
+                    {
                         Console.Clear();
                         Affichage.ColorString("Erreur de placement du bateau. Veuillez réessayer.", ConsoleColor.Red);
                     }
@@ -204,60 +204,68 @@ namespace BattleshipLite_Client
                 Joueur? winner;
                 while (partie.EnCours)
                 {
-
+                    // Boucle pour les actions du serveur
                     if (!partie.CheckIfWinner(partie, out winner))
                     {
-                        //Recois coup serveur
+                        bool ServeurDoitJouer = true;
+
                         Console.WriteLine("Au tour du serveur.");
+                        while (ServeurDoitJouer && !partie.CheckIfWinner(partie, out winner))
+                        {
+                            partie.Joueurs[0].VerifCoup(conn, partie.Joueurs[0].Plateau, out ServeurDoitJouer); // Vérifier si le coup touche
+                            Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
 
-                       
-                        partie.Joueurs[0].VerifCoup(conn, partie.Joueurs[0].Plateau);
+                            if (ServeurDoitJouer)
+                            {
+                                Console.WriteLine("\nLe serveur rejoue...");
+                            }
+
+                            if (partie.CheckIfWinner(partie, out winner))
+                            {
+                                Affichage.MessageVictoire(winner, partie);
+                                partie.EnCours = false;
+                                break; // Sortir de la boucle si victoire
+                            }
+                        }
+
+                        if (!partie.EnCours)
+                        {
+                            break; // Si le serveur a gagné, sortir de la boucle principale
+                        }
 
 
-                        Affichage.PrintMonPlateau(partie.Joueurs[0].Plateau);
+                        bool clientDoitJouer = true;
 
-
-
-
-                        if (!partie.CheckIfWinner(partie, out winner))
+                        while (clientDoitJouer && !partie.CheckIfWinner(partie, out winner))
                         {
                             bool coupValide = false;
                             string coup;
 
-                            //Envoi coup
                             Affichage.PrintPlateauEnemi(partie.Joueurs[1].Plateau);
 
-
-                            if (!partie.CheckIfWinner(partie, out winner))
+                            while (!coupValide)
                             {
-                                do
+                                Affichage.PrintLegende();
+                                Console.Write("Jouez votre coup : ");
+                                coup = Console.ReadLine();
+
+                                coupValide = Partie.IsValidCoordinate(coup) && partie.Joueurs[0].JouerCoup(conn, partie.Joueurs[1].Plateau, coup, out clientDoitJouer);
+                                if (!coupValide)
                                 {
-                                    Affichage.PrintLegende();
-                                    Console.WriteLine("Jouez votre coup: ");
-
-                                    coup = Console.ReadLine();
-
-                                    coupValide = Partie.IsValidCoordinate(coup) && partie.Joueurs[0].JouerCoup(conn, partie.Joueurs[1].Plateau, coup);
-                                    if (!coupValide)
-                                    {
-                                        Affichage.ColorString("\nCoup invalide.", ConsoleColor.Red);
-                                        Affichage.PrintPlateauEnemi(partie.Joueurs[1].Plateau);
-                                    }
-
-                                } while (!coupValide);
+                                    Affichage.ColorString("\nCoup invalide.", ConsoleColor.Red);
+                                    Affichage.PrintPlateauEnemi(partie.Joueurs[1].Plateau);
+                                }
                             }
-
-
-                            Affichage.PrintPlateauEnemi(partie.Joueurs[1].Plateau);
                         }
                     }
                     else
                     {
-
                         Affichage.MessageVictoire(winner, partie);
-                        partie.EnCours = false;
+                        partie.EnCours = false;  
+                        break; // Sortir de la boucle principale
                     }
                 }
+
 
                 if (!partie.EnCours)
                 {
@@ -287,5 +295,8 @@ namespace BattleshipLite_Client
             Console.WriteLine("\n\nMerci d'avoir joué, à bientot !");
         }
     }
-}
 
+
+
+   
+}

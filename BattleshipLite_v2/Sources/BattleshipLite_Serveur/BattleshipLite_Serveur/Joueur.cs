@@ -40,16 +40,18 @@ namespace BattleshipLite_Serveur
         /// </summary>
         /// <param name="joueur">Le joueur</param>
         /// <param name="_case">La case touchée par le joueur</param>
-        public bool JouerCoup(Connexion connexion, Plateau plateau, string Coup)
+        public bool JouerCoup(Connexion connexion, Plateau plateau, string Coup, out bool ServeurDoitJouer)
         {
-
+            ServeurDoitJouer = false;
             Partie.ConvertToGrid(Coup, out int x, out int y);
             //Vérifie si coup valide
             if (!IsPlacementValide(x, y))
             {
                 Console.Clear();
                 Affichage.ColorString("Le coup est hors du plateau.", ConsoleColor.Red);
+                ServeurDoitJouer = true;
                 return false;
+               
             }
 
             // Vérifie si la case a déjà été touchée
@@ -58,7 +60,9 @@ namespace BattleshipLite_Serveur
             {
                 Console.Clear();
                 Affichage.ColorString("La case a déjà été touchée.", ConsoleColor.Red);
+                ServeurDoitJouer = true;
                 return false;
+                
             }
 
 
@@ -85,6 +89,7 @@ namespace BattleshipLite_Serveur
             if (attaque.EstReussi)
             {
                 coupServeur.EstReussi = true;
+                ServeurDoitJouer = true;
 
                 foreach (Bateau bateau in plateau.Bateaux)
                 {
@@ -101,6 +106,8 @@ namespace BattleshipLite_Serveur
                             Console.WriteLine($"Vous avez coulé {bateau.Nom} !");
                         }
 
+                        Console.WriteLine("C'est encore à vous !");
+
                         break;
 
                     }
@@ -114,51 +121,52 @@ namespace BattleshipLite_Serveur
             }
             return true;
         }
-        public void VerifCoup(Connexion connexion, Plateau monPlateau)
+        public bool VerifCoup(Connexion connexion, Plateau monPlateau)
         {
-
             // Réception du coup du serveur
             string json = connexion.Recois(connexion._handler);
             Console.Clear();
+            Coup coupServeur = JsonSerializer.Deserialize<Coup>(json);
 
-            if (json == String.Empty || json == null)
+            // Marquer le coup sur la grille
+            monPlateau.Grille[coupServeur.Case.X][coupServeur.Case.Y].ToucheCase();
+
+            // Vérification si un bateau a été touché
+            foreach (Bateau bateau in monPlateau.Bateaux)
             {
-                return;
-            }
-            Coup coupClient = JsonSerializer.Deserialize<Coup>(json);
-            monPlateau.Grille[coupClient.Case.X][coupClient.Case.Y].ToucheCase();
-
-
-                foreach (Bateau bateau in monPlateau.Bateaux)
+                Case caseTouchee = bateau.Positions.FirstOrDefault(c => c.X == coupServeur.Case.X && c.Y == coupServeur.Case.Y);
+                if (caseTouchee != null)
                 {
-                    Case caseTouchee = bateau.Positions.FirstOrDefault(_case => _case.X == coupClient.Case.X && _case.Y == coupClient.Case.Y);
-                    if (caseTouchee != null)
-                    {
-                        caseTouchee.ToucheCase();
-                        Console.WriteLine($"\nL'ennemi à touché votre {bateau.Nom}.");
-                        coupClient.EstReussi = true;
-                       
+                    caseTouchee.ToucheCase(); // Marquer la case comme touchée sur le bateau
+
+                    Console.WriteLine($"\nL'ennemi a touché votre {bateau.Nom}.");
+                    coupServeur.EstReussi = true;
 
                     // Vérifie si le bateau est coulé
-                        if (bateau.CheckCoule())
-                        {
-                            Console.WriteLine($"L'ennemi a coulé votre {bateau.Nom} !");
-                        }
-
-                    break;
-
+                    if (bateau.CheckCoule())
+                    {
+                        Console.WriteLine($"L'ennemi a coulé votre {bateau.Nom} !");
                     }
-                   
-                }
 
-                if (!coupClient.EstReussi)
-                {
-                    Console.WriteLine("L'ennemi a tiré dans l'eau");
+                    // Envoi de la réponse au serveur
+                    connexion.Envoi(connexion._handler, JsonSerializer.Serialize(coupServeur));
+
+                    // Le serveur rejoue car il a touché un bateau
+                    return true;
                 }
+            }
+
+            // Si aucun bateau n'a été touché
+            if (!coupServeur.EstReussi)
+            {
+                Console.WriteLine("L'ennemi a tiré dans l'eau.");
+            }
 
             // Envoi de la réponse au serveur
-            connexion.Envoi(connexion._handler, JsonSerializer.Serialize<Coup>(coupClient));
-           
+            connexion.Envoi(connexion._handler, JsonSerializer.Serialize(coupServeur));
+
+            // Le serveur ne rejoue pas car il a raté
+            return false;
         }
 
         public bool PlacerChaloupe(Bateau bateau, string case1, string case2)
@@ -292,62 +300,6 @@ namespace BattleshipLite_Serveur
 
             return adj1 && adj2 && angleDroit;
         }
-
-
-
-
-
-        ///// <summary>
-        ///// Place les bateaux sur le plateau
-        ///// </summary>
-        //public bool PlacerBateaux(Bateau bateau, string case1, string case2)
-        //{
-        //    //TODO: plus que deux cases
-        //    Partie.ConvertToGrid(case1, out int x1, out int y1);
-        //    Case _case1 = new Case(x1, y1);
-
-        //    Partie.ConvertToGrid(case2, out int x2, out int y2);
-        //    Case _case2 = new Case(x2, y2);
-        //    // Vérifier que les deux cases sont valides (dans les limites du plateau)
-        //    if (IsPlacementValide(x1, y1) && IsPlacementValide(x2, y2))
-        //    {
-        //        // Vérifier que les deux cases sont adjacentes soit horizontalement, soit verticalement
-        //        bool sontAdjacentes = (x1 == x2 && Math.Abs(y1 - y2) == 1) || (y1 == y2 && Math.Abs(x1 - x2) == 1);
-        //        //Pas la même case
-        //        bool pasPareil = (_case2 != _case1);
-
-        //        if (sontAdjacentes && pasPareil)
-        //        {
-        //            List<Case> positionBateau = new List<Case>();
-        //            positionBateau.Add(_case1);
-        //            positionBateau.Add(_case2);
-
-        //            bateau.PlacerBateau(positionBateau);
-        //            Plateau.Bateaux.Add(bateau);
-
-        //            Console.WriteLine($"Bateau placé en {case1} et {case2}");
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            Console.WriteLine("Le bateau ne peux pas être placé de cette manière sur le plateau.");
-        //            return false;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Les coordonnées sont hors du plateau.");
-        //        return false;
-        //    }
-        //}
-        //public bool IsPlacementValide(int x, int y)
-        //{
-        //    if (x >= 0 && x < Plateau.Hauteur&& y >= 0 && y < Plateau.Largeur)
-        //    {
-        //        return true;
-        //    }
-        //    return false;
-        //}
 
     }
 }
