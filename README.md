@@ -2,7 +2,8 @@
 Développement d'application expert
 ## DEMANDES DE MODIFICATIONS 
 Voici les demandes supplémentaires apportées par le client : 
-• La taille de la grille de jeu devrait être spécifiée au démarrage du serveur et du client et approuvée par les deux joueurs.
+-
+• La taille de la grille de jeu devrait être spécifiée au démarrage du serveur et du client et approuvée par les deux joueurs.  
 • Le jeu devrait contenir 3 bateaux différents pour chaque joueur, de taille et de forme différentes
 • Un joueur peut continuer à tirer tant et aussi longtemps que son tir précédent à touché un bateau ennemi.
 Ces trois demandes ont été intégrées avec succès au programme.
