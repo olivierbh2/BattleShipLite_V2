@@ -11,12 +11,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("BattleshipLite_Client")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("BattleshipLite_Serveur")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c575c99a23169962e03c90b07e6eeceab031df87")]
-[assembly: System.Reflection.AssemblyProductAttribute("BattleshipLite_Client")]
-[assembly: System.Reflection.AssemblyTitleAttribute("BattleshipLite_Client")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3eaeb9969d3fce15a76fdfbeb6c9821926563035")]
+[assembly: System.Reflection.AssemblyProductAttribute("BattleshipLite_Serveur")]
+[assembly: System.Reflection.AssemblyTitleAttribute("BattleshipLite_Serveur")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Généré par la classe MSBuild WriteCodeFragment.

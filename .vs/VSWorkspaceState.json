@@ -5,8 +5,9 @@
     "\\BattleshipLite_v2\\Sources",
     "\\BattleshipLite_v2\\Sources\\BattleshipLite_Client",
     "\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client",
-    "\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\TestsUnitaires"
+    "\\BattleshipLite_v2\\Sources\\BattleshipLite_Serveur",
+    "\\BattleshipLite_v2\\Sources\\BattleshipLite_Serveur\\BattleshipLite_Serveur"
   ],
-  "SelectedNode": "\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\Affichage.cs",
+  "SelectedNode": "\\BattleshipLite_v2\\Sources\\BattleshipLite_Serveur\\BattleshipLite_Serveur\\Affichage.cs",
   "PreviewInSolutionExplorer": false
 }

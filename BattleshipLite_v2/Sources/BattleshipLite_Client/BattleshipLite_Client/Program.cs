@@ -230,7 +230,7 @@ namespace BattleshipLite_Client
 
                         if (!partie.EnCours)
                         {
-                            break; // Si le serveur a gagné, sortir de la boucle principale
+                            break; // Si le serveur a gagné, sortir de la boucle
                         }
 
 

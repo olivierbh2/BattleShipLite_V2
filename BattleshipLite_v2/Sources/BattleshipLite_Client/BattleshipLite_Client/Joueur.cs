@@ -123,7 +123,7 @@ namespace BattleshipLite_Client
             Console.Clear();
             Coup coupServeur = JsonSerializer.Deserialize<Coup>(json);
 
-            // Marquer le coup sur la grille
+            // Marquer le coup sur le plateau
             monPlateau.Grille[coupServeur.Case.X][coupServeur.Case.Y].ToucheCase();
 
             foreach (Bateau bateau in monPlateau.Bateaux)
@@ -137,7 +137,7 @@ namespace BattleshipLite_Client
                     coupServeur.EstReussi = true;
                     ServeurDoitJouer = true;
 
-                    // Vérifie si le bateau est coulé
+                    // check si le bateau est coulé
                     if (bateau.CheckCoule())
                     {
                         Console.WriteLine($"L'ennemi a coulé votre {bateau.Nom} !");
