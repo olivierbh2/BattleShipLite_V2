@@ -277,7 +277,7 @@ namespace BattleshipLite_Client
             return false;
         }
 
-        private bool FormeL((int X, int Y) c1, (int X, int Y) c2, (int X, int Y) c3)
+        private bool FormeL((int X, int Y) c1, (int X, int Y) c2, (int X, int Y) c3) // CHAT GPT
         {
             // Vérifie si c1 et c2 sont adjacents
             bool adj1 = (c1.X == c2.X && Math.Abs(c1.Y - c2.Y) == 1) || (c1.Y == c2.Y && Math.Abs(c1.X - c2.X) == 1);

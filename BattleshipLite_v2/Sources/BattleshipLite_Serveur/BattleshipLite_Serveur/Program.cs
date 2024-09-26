@@ -76,7 +76,6 @@ namespace BattleshipLite_Serveur
                     Bateau bateau2 = new("Voilier1", "Voilier", new List<Case>());
                     Bateau bateau3 = new("Paquebot1", "Paquebot", new List<Case>());
 
-                    // Placement des bateaux
 
                     //Placer Chaloupe 
                     Console.Clear();
@@ -175,10 +174,10 @@ namespace BattleshipLite_Serveur
                     } while (!PaquebotEstPlace);
 
 
-                    // Envoyer le plateau au client
+                    //Envoyer le plateau au client
                     if (!connexion.Envoi(connexion._handler, JsonSerializer.Serialize(partie.Joueurs[0].Plateau)))
                     {
-                        break; // Client déconnecté
+                        break; // Client déco
                     }
 
                     Console.Clear();
@@ -201,7 +200,7 @@ namespace BattleshipLite_Serveur
 
                     while (partie.EnCours)
                     {
-                        // Vérifier si un joueur a gagné
+                        // Vérifier si quelqun a gagné
                         if (!partie.CheckIfWinner(partie, out winner))
                         {
                             // Tour du serveur
@@ -242,7 +241,7 @@ namespace BattleshipLite_Serveur
    
                             }
 
-                            // Si le client manque, le serveur peut rejouer
+                            // Si le client manque serveur joue
                             serveurDoitJouer = !clientDoitJouer;
                         }
                         else
@@ -272,7 +271,7 @@ namespace BattleshipLite_Serveur
                     }
                 }
 
-                // Déconnexion du client
+                // Déconnexion
                 Console.WriteLine("Connexion coupée, en attente d'un autre client...");
                 connexion.ArreterServeur();
             }

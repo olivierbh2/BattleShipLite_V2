@@ -6,12 +6,12 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "BattleshipLite_Serveur/1.0.0": {
+      "BattleshipLite_Client/1.0.0": {
         "dependencies": {
           "System.Text.Json": "6.0.9"
         },
         "runtime": {
-          "BattleshipLite_Serveur.dll": {}
+          "BattleshipLite_Client.dll": {}
         }
       },
       "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
@@ -35,7 +35,7 @@
     }
   },
   "libraries": {
-    "BattleshipLite_Serveur/1.0.0": {
+    "BattleshipLite_Client/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

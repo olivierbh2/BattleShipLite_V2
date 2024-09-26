@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AdDa4yRKs5HPasFpzoz5olCU2L+JaweoBDQCb9MTvrYqAs/TYRtIthIwrucaUAkU7rw3SzNXOdu84t+6btgrpQ==",
+  "dgSpecHash": "jpnoMGhlo/aU5tQfho/TF9RUSaeMSU5blT9owgvl3pG6j+b4QsjNRgCLGUgKOGvqkG9oNuqhifuUjKF+J7RUlw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\olivier\\source\\repos\\BattleShipLite_V2\\BS2\\BattleshipLite_v2\\Sources\\BattleshipLite_Serveur\\BattleshipLite_Serveur\\BattleshipLite_Serveur.csproj",
+  "projectFilePath": "C:\\Users\\olivier\\source\\repos\\BattleShipLite_V2\\BS2\\BattleshipLite_v2\\Sources\\BattleshipLite_Client\\BattleshipLite_Client\\BattleshipLite_Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\olivier\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\olivier\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",

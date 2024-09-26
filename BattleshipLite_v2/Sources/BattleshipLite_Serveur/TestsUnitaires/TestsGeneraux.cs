@@ -16,7 +16,7 @@ namespace TestsUnitaires
         {
             Partie partie = new Partie();
             partie.Demarrer(ref partie, 4, 4);
-            bool result = partie.Joueurs.FirstOrDefault().JouerCoup(new Connexion(80), partie.Joueurs.FirstOrDefault().Plateau, "E5");
+            bool result = partie.Joueurs.FirstOrDefault().JouerCoup(new Connexion(80), partie.Joueurs.FirstOrDefault().Plateau, "E5", out bool ServDoitJouer);
             Assert.IsTrue(!result);
         }
 
@@ -28,8 +28,8 @@ namespace TestsUnitaires
             partie.Demarrer(ref partie, 4, 4);
             Joueur joueur1 = partie.Joueurs.FirstOrDefault();
             Joueur joueur2 = partie.Joueurs.LastOrDefault();
-            joueur1.PlacerBateaux(new Bateau("Kayak", new List<Case>()), "A1", "A2");
-            joueur2.PlacerBateaux(new Bateau("Chaloupe", new List<Case>()), "A1", "A2");
+            joueur1.PlacerChaloupe(new Bateau("Kayak","Chaloupe", new List<Case>()), "A1", "A2");
+            joueur2.PlacerChaloupe(new Bateau("Chaloupe", "Chaloupe", new List<Case>()), "A1", "A2");
 
             bool result = partie.CheckIfWinner(partie, out joueur1);
             if (result)
@@ -59,7 +59,7 @@ namespace TestsUnitaires
             partie.Joueurs.FirstOrDefault().Coups.Add(new Coup { Case = partie.Joueurs.FirstOrDefault().Plateau.Grille[0][0], EstReussi = true });
 
             //Essaie de jouer un coup déjà joué
-            bool result = partie.Joueurs.FirstOrDefault().JouerCoup(new Connexion(80), partie.Joueurs.FirstOrDefault().Plateau, "A1");
+            bool result = partie.Joueurs.FirstOrDefault().JouerCoup(new Connexion(80), partie.Joueurs.FirstOrDefault().Plateau, "A1", out bool ServDoitJouer);
 
             //Teste si le coup a réussi
             Assert.IsTrue(!result);
@@ -82,11 +82,11 @@ namespace TestsUnitaires
         {
             Partie partie = new Partie();
             partie.Demarrer(ref partie, 4, 4);
-            Bateau bateau = new Bateau("Kayak", new List<Case>());
-            bool estPlace = partie.Joueurs[0].PlacerBateaux(bateau, "G5", "G6");
+            Bateau bateau = new Bateau("Chaloupe1", "Chaloupe", new List<Case>());
+            bool estPlace = partie.Joueurs[0].PlacerChaloupe(bateau, "G5", "G6");
 
             //Teste si le bateau est placé sur une case invalide
-            Assert.IsTrue(!partie.Joueurs[0].PlacerBateaux(bateau, "G5", "G6"));
+            Assert.IsTrue(!partie.Joueurs[0].PlacerChaloupe(bateau, "G5", "G6"));
         }
 
     }

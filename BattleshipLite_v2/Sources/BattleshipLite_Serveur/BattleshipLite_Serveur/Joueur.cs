@@ -66,14 +66,14 @@ namespace BattleshipLite_Serveur
             }
 
 
-            // Envoi du coup au serveur
+            // Envoi au serveur
             
             if(!connexion.Envoi(connexion._handler, JsonSerializer.Serialize<Coup>(coupServeur)))
             {
                 return false;
             }
 
-            // Réception de la réponse du serveur
+            // Recois reponse du serv
             string json = connexion.Recois(connexion._handler);
             if (json == String.Empty || json == null)
             {
@@ -123,7 +123,7 @@ namespace BattleshipLite_Serveur
         }
         public bool VerifCoup(Connexion connexion, Plateau monPlateau)
         {
-            // Réception du coup du serveur
+            // Réception du coup
             string json = connexion.Recois(connexion._handler);
             Console.Clear();
             Coup coupServeur = JsonSerializer.Deserialize<Coup>(json);
@@ -137,7 +137,7 @@ namespace BattleshipLite_Serveur
                 Case caseTouchee = bateau.Positions.FirstOrDefault(c => c.X == coupServeur.Case.X && c.Y == coupServeur.Case.Y);
                 if (caseTouchee != null)
                 {
-                    caseTouchee.ToucheCase(); // Marquer la case comme touchée sur le bateau
+                    caseTouchee.ToucheCase(); // Marquer la case sur bateau comme touché
 
                     Console.WriteLine($"\nL'ennemi a touché votre {bateau.Nom}.");
                     coupServeur.EstReussi = true;
@@ -148,21 +148,21 @@ namespace BattleshipLite_Serveur
                         Console.WriteLine($"L'ennemi a coulé votre {bateau.Nom} !");
                     }
 
-                    // Envoi de la réponse au serveur
+                   //envoi au serveuyr
                     connexion.Envoi(connexion._handler, JsonSerializer.Serialize(coupServeur));
 
-                    // Le serveur rejoue car il a touché un bateau
+                    // Le serveur rejoue car il a touch un bateau
                     return true;
                 }
             }
 
-            // Si aucun bateau n'a été touché
+            // Si aucun bateau est touché
             if (!coupServeur.EstReussi)
             {
                 Console.WriteLine("L'ennemi a tiré dans l'eau.");
             }
 
-            // Envoi de la réponse au serveur
+            //envoi au serveur
             connexion.Envoi(connexion._handler, JsonSerializer.Serialize(coupServeur));
 
             // Le serveur ne rejoue pas car il a raté
@@ -242,7 +242,7 @@ namespace BattleshipLite_Serveur
 
             if (IsPlacementValide(x1, y1) && IsPlacementValide(x2, y2) && IsPlacementValide(x3, y3) && !ContainsBoat(x1, y1) && !ContainsBoat(x2, y2) && !ContainsBoat(x3, y3))
             {
-                // Vérifier si les trois cases sont alignées en diagonale
+                // Vérifier si les trois cases sont diagonale
                 bool estDiagonal = (Math.Abs(x1 - x2) == 1 && Math.Abs(y1 - y2) == 1) &&
                                    (Math.Abs(x2 - x3) == 1 && Math.Abs(y2 - y3) == 1);
 
@@ -287,7 +287,7 @@ namespace BattleshipLite_Serveur
             return false;
         }
 
-        private bool FormeL((int X, int Y) c1, (int X, int Y) c2, (int X, int Y) c3)
+        private bool FormeL((int X, int Y) c1, (int X, int Y) c2, (int X, int Y) c3) // chatgpt
         {
             // Vérifie si c1 et c2 sont adjacents
             bool adj1 = (c1.X == c2.X && Math.Abs(c1.Y - c2.Y) == 1) || (c1.Y == c2.Y && Math.Abs(c1.X - c2.X) == 1);
